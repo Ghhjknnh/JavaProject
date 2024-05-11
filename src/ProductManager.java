@@ -6,16 +6,15 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 
-public class Function {
+public class ProductManager {
 	Scanner sc=new Scanner(System.in);
 	Connection conn; 
 	Statement stmt = null;
 	
 	public void 물품리스트() {
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		// org.mariadb.jdbc.Driver 또는 com.mysql.jdbc.Driver
+			Class.forName("org.mariadb.jdbc.Driver");		
 			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
-											// jdbc:mariadb: 또는 jdbc:mysql: 시놀로지 마리아DB 5 연결
 			stmt = conn.createStatement();
 			
 			ResultSet rs = stmt.executeQuery("select * from product");
@@ -28,6 +27,31 @@ public class Function {
 				
 				System.out.println("물품:" + pName + "\t" +
 		                   "물품개수:" + pcount + "\t" +
+		                   "가격:" + pprice + "\t" +
+		                   "위치:" + ploction);
+			}
+			
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			System.out.println("JDBC 드라이버 로드 에러");
+		} catch (SQLException e) {
+			System.out.println("DB 연결 오류");
+		}
+	}
+	
+	public void 물품검색(String name) {
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");		
+			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
+			stmt = conn.createStatement();
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM product WHERE pname = '" + name + "'");
+			while (rs.next()) {
+				String pName = rs.getString("pname");
+				int pprice = rs.getInt("pprice");
+				String	ploction = rs.getString("plocation");
+				
+				System.out.println("물품:" + pName + "\t" +
 		                   "가격:" + pprice + "\t" +
 		                   "위치:" + ploction);
 			}

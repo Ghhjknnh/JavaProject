@@ -3,35 +3,40 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.util.Scanner;
 
 
 public class Login {
 
-	    public boolean authenticate(String id, String password) {
-	        String url = "jdbc:mariadb://127.0.0.1:3306/daiso";
-	        String username = "root";
-	        String dbPassword = "rlsmr123";
+	public int authenticate(String id, String password) {
+	    String url = "jdbc:mariadb://127.0.0.1:3306/daiso";
+	    String username = "root";
+	    String dbPassword = "rlsmr123";
 
-	        String query = "SELECT EXISTS (SELECT 1 FROM admin WHERE id = ? AND password = ?) AS result";
-	        boolean loginSuccess = false;
+	    String query = "SELECT CASE " +
+	                   "WHEN EXISTS (SELECT 1 FROM admin WHERE aid = ? AND apassword = ?) THEN 1 " +
+	                   "WHEN EXISTS (SELECT 1 FROM customer WHERE cid = ? AND cpassword = ?) THEN 2 " +
+	                   "ELSE 0 " +
+	                   "END AS login_result";
 
-	        try (Connection connection = DriverManager.getConnection(url, username, dbPassword);
-	             PreparedStatement pstmt = connection.prepareStatement(query)) {
-	            pstmt.setString(1, id);
-	            pstmt.setString(2, password);
+	    int loginResult = 0; // Default to 0, indicating unsuccessful login
 
-	            try (ResultSet rs = pstmt.executeQuery()) {
-	                if (rs.next()) {
-	                    int result = rs.getInt("result");
-	                    loginSuccess = result == 1;
-	                }
+	    try (Connection connection = DriverManager.getConnection(url, username, dbPassword);
+	         PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, id);
+	        pstmt.setString(2, password);
+	        pstmt.setString(3, id);
+	        pstmt.setString(4, password);
+
+	        try (ResultSet rs = pstmt.executeQuery()) {
+	            if (rs.next()) {
+	                loginResult = rs.getInt("login_result");
 	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
 	        }
-
-	        return loginSuccess;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
 	    }
+
+	    return loginResult;
+	}
 	}
 
