@@ -11,11 +11,10 @@ public class SalesManagement {
 	Scanner sc=new Scanner(System.in);
 	Connection conn; 
 	Statement stmt = null;
-	
+	DBconnect db = new DBconnect();
 	void daily(int year,int month, int day) {
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			
 			ResultSet rs = stmt.executeQuery("SELECT SUM(price) AS dailytotal " +
@@ -39,8 +38,7 @@ public class SalesManagement {
 	
 	void monthly(int year,int month) {
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			
 			ResultSet rs = stmt.executeQuery("SELECT YEAR(date) AS sales_year, MONTH(date) AS sales_month, SUM(price) AS monthly_total " +
@@ -56,10 +54,7 @@ public class SalesManagement {
 		            } else {
 		                System.out.println("해당 연도와 월에 매출이 없습니다.");
 		            }
-                 
-				
-			
-			
+     
 			conn.close();
 		} catch (ClassNotFoundException e) {
 			System.out.println("JDBC 드라이버 로드 에러");

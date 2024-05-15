@@ -12,11 +12,10 @@ public class CustomerManagement {
 	Scanner sc=new Scanner(System.in);
 	Connection conn; 
 	Statement stmt = null;
-	
+	DBconnect db = new DBconnect();
 	public void 구매(String id,String name,int count) {
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT pname, pcount, pprice FROM product WHERE pname = '" + name + "'");
 			
@@ -28,9 +27,9 @@ public class CustomerManagement {
 			    System.out.println("물품:" + pName + " 수량:" + count + " 가격:" + cost +"\n구매하시겠습니까? 1.구매/2.취소");
 			    int select = sc.nextInt();
 			    if(select == 1) {
-			    	System.out.print("1개상품이 구매되었습니다.");
+			    	System.out.println("1개상품이 구매되었습니다.");
 			    	stmt.executeUpdate("UPDATE product SET pcount = pcount - " + count + " WHERE pname = '" + name + "'");
-			    	stmt.executeUpdate("INSERT INTO sales(id,pname, price,pcount) VALUES ('"+ id + "','" + 
+			    	stmt.executeUpdate("INSERT INTO sales(cid,pname, price,pcount) VALUES ('"+ id + "','" + 
 			                name + "', " + cost + ", " + count + ");");
 			    }
 			    else if(select == 2) {System.out.print("주문이 취소 되었습니다");}
@@ -51,11 +50,10 @@ public class CustomerManagement {
 	
 	public void 구매기록(String id) {  //이름 테이블 만들어서 "이름"님의 구매기록 만들기
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			
-			ResultSet rs = stmt.executeQuery("SELECT * FROM sales WHERE id = '" + id + "'");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM sales WHERE cid = '" + id + "'");
 			while (rs.next()) {
 				String pName = rs.getString("pname");
 				int pprice = rs.getInt("price");

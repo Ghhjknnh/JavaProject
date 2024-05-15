@@ -10,11 +10,9 @@ public class ProductManager {
 	Scanner sc=new Scanner(System.in);
 	Connection conn; 
 	Statement stmt = null;
-	
 	public void 물품리스트() {
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			
 			ResultSet rs = stmt.executeQuery("select * from product");
@@ -41,12 +39,12 @@ public class ProductManager {
 	
 	public void 물품검색(String name) {
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM product WHERE pname = '" + name + "'");
-			while (rs.next()) {
+			if(rs.next()) {
+				
 				String pName = rs.getString("pname");
 				int pprice = rs.getInt("pprice");
 				String	ploction = rs.getString("plocation");
@@ -54,7 +52,8 @@ public class ProductManager {
 				System.out.println("물품:" + pName + "\t" +
 		                   "가격:" + pprice + "\t" +
 		                   "위치:" + ploction);
-			}
+			     
+			}else {System.out.println("해당하는 상품이 없습니다.");}
 			
 			conn.close();
 		} catch (ClassNotFoundException e) {
@@ -75,9 +74,7 @@ public class ProductManager {
 		String location = sc.next();
 		int	   pcount = sc.nextInt();
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
-															
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			
 			int i = stmt.executeUpdate("INSERT INTO product(pname, pprice, plocation, pcount) VALUES ('" + 
@@ -105,9 +102,7 @@ public class ProductManager {
 		int pcount = sc.nextInt();
 		
 		try {
-			Class.forName("org.mariadb.jdbc.Driver");		
-			conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
-															
+			conn = DBconnect.getConnection();
 			stmt = conn.createStatement();
 			
 			int i = stmt.executeUpdate("UPDATE product SET pcount = pcount + " + pcount + " WHERE pname = '" + pname + "'");
@@ -134,9 +129,7 @@ public class ProductManager {
 			int pcount = sc.nextInt();
 			
 			try {
-				Class.forName("org.mariadb.jdbc.Driver");		
-				conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root","rlsmr123");
-																
+				conn = DBconnect.getConnection();
 				stmt = conn.createStatement();
 				
 				int i = stmt.executeUpdate("UPDATE product SET pcount = pcount - " + pcount + " WHERE pname = '" + pname + "'");

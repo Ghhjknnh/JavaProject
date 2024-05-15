@@ -10,15 +10,19 @@ public class Daiso {
 		CustomerManagement 고객관리 = new CustomerManagement();
 		CustomerPage customer = new CustomerPage();
 		AdminPage admin = new AdminPage();
+		Name name = new Name();
 		
 		Scanner sc = new Scanner(System.in);
 		int select;
+		
 		System.out.println("다이소 매장관리 프로그램");
 		
 		System.out.print("아이디를 입력해주세요: ");
 		String id = sc.next();
 		System.out.print("비밀번호를 입력해주세요: ");
 		String password = sc.next();
+		
+		
 		
 		Login login = new Login();
 		int loginSuccess = login.authenticate(id, password);
@@ -36,7 +40,8 @@ public class Daiso {
 		            }
 		    
 		}else if(loginSuccess==2){
-			System.out.println("환영합니다.");
+			String 이름 = name.Get_name(id);
+			System.out.println(이름+"님 환영합니다.");
 					while(true) {
 						System.out.println("1. 물품 구매\n2. 물품검색 \n3. 구매기록 확인\n4. 끝내기");
 			            System.out.print("메뉴를 선택하세요: ");

@@ -58,7 +58,10 @@ public class AdminPage {
 		                month = sc.nextInt();
 		                매출관리.monthly(year, month);
 		                break;
-            	}
+            	default:
+	                    System.out.println("잘못된 선택입니다.");
+	                    break;
+            			}
                 break;
                 
                 

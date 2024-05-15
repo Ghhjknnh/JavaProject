@@ -5,8 +5,11 @@ public class CustomerPage {
 	ProductManager 물품관리 =new ProductManager();
 	CustomerManagement 고객관리 = new CustomerManagement();
 	Scanner sc = new Scanner(System.in);
+	Name name = new Name();
+	
 	
 	void customer(String id,int select) {
+		String cname = name.Get_name(id);
           switch (select) {
 	            case 1:
 	                System.out.println("구매하고싶은 물품의 이름과 수량을 입력해주세요");
@@ -22,7 +25,7 @@ public class CustomerPage {
 	                물품관리.물품검색(name);
 	                break;
 	            case 3:
-	                System.out.println("구매기록 확인");
+	                System.out.println(cname + "님의 구매기록 확인");
 	                고객관리.구매기록(id);              
 	                        
 	                
