@@ -23,10 +23,10 @@ public class ProductManager {
 				int pcount = rs.getInt("pcount");
 				String	ploction = rs.getString("plocation");
 				
-				System.out.println("물품:" + pName + "\t" +
-		                   "물품개수:" + pcount + "\t" +
-		                   "가격:" + pprice + "\t" +
-		                   "위치:" + ploction);
+				System.out.println("물품:" + pName + "\n" +
+		                   "물품개수:" + pcount + "\n" +
+		                   "가격:" + pprice + "\n" +
+		                   "위치:" + ploction + "\n");
 			}
 			
 			conn.close();

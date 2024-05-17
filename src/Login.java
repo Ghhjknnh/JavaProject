@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 public class Login {
 
 	public int authenticate(String id, String password) {
-	    String url = "jdbc:mariadb://127.0.0.1:3306/daiso";
-	    String username = "root";
-	    String dbPassword = "rlsmr123";
+	    String url = "jdbc:mariadb://221.141.176.19:3306/daiso";
+	    String username = "test";
+	    String dbPassword = "111";
 
 	    String query = "SELECT CASE " +
 	                   "WHEN EXISTS (SELECT 1 FROM admin WHERE aid = ? AND apassword = ?) THEN 1 " +

@@ -10,7 +10,7 @@ public class DBconnect {  //DB교체시 login claas 와 같이 수정
 	    public static Connection getConnection() throws ClassNotFoundException, SQLException {
 	        if (conn == null || conn.isClosed()) {
 	            Class.forName("org.mariadb.jdbc.Driver");
-	            conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/daiso", "root", "rlsmr123");
+	            conn = DriverManager.getConnection("jdbc:mariadb://221.141.176.19:3306/daiso", "test", "111");
 	        }
 	        return conn;
 	    }

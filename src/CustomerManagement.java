@@ -23,18 +23,24 @@ public class CustomerManagement {
 			    String pName = rs.getString("pname");
 			    int pprice = rs.getInt("pprice");
 			    int cost = pprice * count;
+			    int pcount = rs.getInt("pcount");
 			    
-			    System.out.println("물품:" + pName + " 수량:" + count + " 가격:" + cost +"\n구매하시겠습니까? 1.구매/2.취소");
-			    int select = sc.nextInt();
-			    if(select == 1) {
-			    	System.out.println("1개상품이 구매되었습니다.");
-			    	stmt.executeUpdate("UPDATE product SET pcount = pcount - " + count + " WHERE pname = '" + name + "'");
-			    	stmt.executeUpdate("INSERT INTO sales(cid,pname, price,pcount) VALUES ('"+ id + "','" + 
-			                name + "', " + cost + ", " + count + ");");
-			    }
-			    else if(select == 2) {System.out.print("주문이 취소 되었습니다");}
-			    else {System.out.print("잘못 입력 하셨습니다");}
-			} 
+			    
+			    if(pcount == 0) {
+		    	System.out.println("현재"+ pName + "제품의 재고가 없습니다.");
+			    }else {
+				    System.out.println("물품:" + pName + " 수량:" + count + " 가격:" + cost +"\n구매하시겠습니까? 1.구매/2.취소");
+				    int select = sc.nextInt();
+				    if(select == 1) {
+				    	System.out.println("1개상품이 구매되었습니다.");
+				    	stmt.executeUpdate("UPDATE product SET pcount = pcount - " + count + " WHERE pname = '" + name + "'");
+				    	stmt.executeUpdate("INSERT INTO sales(cid,pname, price,pcount) VALUES ('"+ id + "','" + 
+				                name + "', " + cost + ", " + count + ");");
+				    }
+				    else if(select == 2) {System.out.print("주문이 취소 되었습니다");}
+				    else {System.out.print("잘못 입력 하셨습니다");}
+				    } 
+			}
 			else {
 			    System.out.println("일치하는 물품이 없습니다.");
 			}
